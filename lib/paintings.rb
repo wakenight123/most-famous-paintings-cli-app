@@ -3,7 +3,7 @@ require 'open-uri'
 require 'pry'
 
 class Painting
-  attr_accessor :painter, :title, :location, :url, :style, :century
+  attr_accessor :painter, :location, :style, :century
 
   @@all = []
 
