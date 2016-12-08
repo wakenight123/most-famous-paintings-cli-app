@@ -24,23 +24,25 @@ class Painting
 
   # identify attributes of each newly scraped painting
   def self.new_from_scraped_site(card)
-    url = card.css("a.col-item").attribute("href").text
-    
+    @url = card.css("a.col-item").attribute("href").text
+
     self.new(card.css("a > span.col-item-title").text,
-    card.css("a.col-item").attribute("href").text,
-    url.css("ul.lined.features > li:nth-child(1) > span > a").text,
-    url.css("ul.lined.features > li:nth-child(3) > span > a").text,
-    url.css("ul.lined.features > li:nth-child(7) > span > a").text,
-    url.css("ul.lined.features > li:nth-child(5) > span > a").text,
-    url.css("ul.lined.features > li:nth-child(4) > span > a").text)
+    card.css("a.col-item").attribute("href").text
+    scraper.scrape_painting_profile(url).css("ul.lined.features > li:nth-child(1) > span > a").text,
+    scraper.scrape_painting_profile(url).css("ul.lined.features > li:nth-child(3) > span > a").text,
+    scraper.scrape_painting_profile(url).css("ul.lined.features > li:nth-child(7) > span > a").text,
+    scraper.scrape_painting_profile(url).css("ul.lined.features > li:nth-child(5) > span > a").text,
+    scraper.scrape_painting_profile(url).css("ul.lined.features > li:nth-child(4) > span > a").text)
   end
 
   # lists all painting titles
-  def list_all_paintings
-    scraper.scrape_painting.each do |card|
+  def list_all_painting_titles
+    scraper.scrape_paintings.each do |card|
       title = card("a > span.col-item-title").text
-      puts title
+      title_array = []
+      title_array << title
     end
+    title_array
   end
 
 end
