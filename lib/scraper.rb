@@ -9,7 +9,7 @@ class Scraper
     self.scrape_site.css("div.col.col-25")
   end
 
-  # enter all painting.new(title, url) into painting.all
+  # enter all painting attributes into painting.all
   def make_painting
     scraper.scrape_painting.each do |card|
       painting.new_from_scraped_site(card)
