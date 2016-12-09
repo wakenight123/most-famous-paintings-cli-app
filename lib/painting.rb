@@ -1,6 +1,5 @@
 require 'nokogiri'
 require 'open-uri'
-require 'pry'
 
 class Painting
   attr_accessor :title, :ranking, :url, :painter, :painter_nationality, :location, :style, :time_period
@@ -23,18 +22,18 @@ class Painting
     @@all
   end
 
-  # identify attributes of each newly scraped painting
-  def self.new_from_scraped_site(card)
-    @url = card.css("a.col-item").attribute("href").text
-
-    self.new(card.css("a > span.col-item-title").text,
-    index + 1,
-    card.css("a.col-item").attribute("href").text
-    scraper.scrape_painting_profile(url).css("ul.lined.features > li:nth-child(1) > span > a").text,
-    scraper.scrape_painting_profile(url).css("ul.lined.features > li:nth-child(3) > span > a").text,
-    scraper.scrape_painting_profile(url).css("ul.lined.features > li:nth-child(7) > span > a").text,
-    scraper.scrape_painting_profile(url).css("ul.lined.features > li:nth-child(5) > span > a").text,
-    scraper.scrape_painting_profile(url).css("ul.lined.features > li:nth-child(4) > span > a").text)
+  # enter all painting attributes into painting.all
+  def make_paintings
+    scraper.scrape_paintings.each_with_index do |card, index|
+      self.new(card.css("a > span.col-item-title").text,
+      index + 1,
+      card.css("a.col-item").attribute("href").text,
+      scraper.scrape_painting_profile(url).css("ul.lined.features > li:nth-child(1) > span > a").text,
+      scraper.scrape_painting_profile(url).css("ul.lined.features > li:nth-child(3) > span > a").text,
+      scraper.scrape_painting_profile(url).css("ul.lined.features > li:nth-child(7) > span > a").text,
+      scraper.scrape_painting_profile(url).css("ul.lined.features > li:nth-child(5) > span > a").text,
+      scraper.scrape_painting_profile(url).css("ul.lined.features > li:nth-child(4) > span > a").text)
+    end
   end
 
   # lists all painting titles
