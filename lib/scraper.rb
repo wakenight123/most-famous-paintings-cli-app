@@ -21,9 +21,10 @@ class Scraper
 
   # enter all painting attributes into painting.all
   def make_paintings
-    scraper.scrape_paintings.each do |card|
+    scraper.scrape_paintings.each_with_index do |card|
       painting.new_from_scraped_site(card)
     end
   end
 
 end
+
