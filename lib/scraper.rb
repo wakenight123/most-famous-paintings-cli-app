@@ -1,6 +1,5 @@
 require 'nokogiri'
 require 'open-uri'
-require 'pry'
 
 require_relative './painting.rb'
 
@@ -17,13 +16,6 @@ class Scraper
 
   def scrape_painting_profile(url)
     Nokogiri::HTML(open(url))
-  end
-
-  # enter all painting attributes into painting.all
-  def make_paintings
-    scraper.scrape_paintings.each_with_index do |card, index|
-      painting.new_from_scraped_site(card)
-    end
   end
 
 end
