@@ -19,15 +19,15 @@ class Cli
     puts ""
     puts "Would you like to search for a painting by painter, title or rank?"
     input = gets.strip.downcase
-    if input == "painter" || "by painter"
+    if input == "painter" || input == "by painter"
       puts ""
       puts "Please enter the name of the painter."
       search_by_painter
-    elsif input == "title" || "by title"
+    elsif input == "title" || input == "by title"
       puts ""
       puts "Please enter the title of the painting."
       search_by_title
-    elsif input == "rank" || "by rank"
+    elsif input == "rank" || input == "by rank"
       search_by_rank
     else
       puts ""
@@ -56,7 +56,7 @@ class Cli
 
   def search_by_title
     input = gets.strip.downcase
-    if painting.list_all_painting_titles.detect{|painting| painting.downcase == input} != nil
+    if painting.list_all_painting_titles.detect{|p| p.downcase == input} != nil
       puts ""
       puts "'#{painting}' is ranked ##{painting.ranking} in this list of The Most Famous Paintings of All-Time."
       puts ""
@@ -74,24 +74,24 @@ class Cli
   end
 
   def search_by_rank
-    puts "Please choose paintings ranked from 1-10, 11-20, 21-30, 31-40, 41-50, 51-60, 61-70, 71-80, 81-90 or 91-100."
+    puts "Please choose a ranking interval from 1-100. For example, you can enter 1-25."
     input = gets.strip.to_s
-    if input != "1-10" || "11-20" || "21-30" || "31-40" || "41-50" || "51-60" || "61-70" || "71-80" || "81-90" || "91-100"
-      puts "Invalid entry. Please try again."
-      puts ""
-      search_by_rank
-    else
+    if input.split("-").each {|num| num.to_i.between?(1, 100) == true}
       from = input.split("-")[0].to_i
       to = input.split("-")[1].to_i
       puts ""
       puts "----- Paintings ranked # #{from} - #{to} -----"
 
-      painting.list_all_painting_titles[from-1 ,10].each_with_index do |painting, index|
+      painting.list_all_painting_titles[from-1 ,to-from+1].each_with_index do |painting, index|
         puts "#{index}. '#{painting.title}' by #{painting.painter}(#{painting.painter_nationality}), #{painting.time_period}"
         end
       puts ""
       puts "Would you like to search for more paintings?"
       play_again
+    else
+        puts "Invalid entry. Please try again."
+        puts ""
+        search_by_rank
     end
   end
 
