@@ -1,5 +1,6 @@
 require 'nokogiri'
 require 'open-uri'
+require_relative './scraper.rb'
 
 class Painting
   attr_accessor :title, :ranking, :url, :painter, :painter_nationality, :location, :style, :time_period
@@ -37,7 +38,7 @@ class Painting
   end
 
   # lists all painting titles
-  def list_all_painting_titles
+  def self.list_all_painting_titles
     scraper.scrape_paintings.each do |card|
       title = card("a > span.col-item-title").text
       title_array = []
