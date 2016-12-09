@@ -85,8 +85,13 @@ class Cli
       to = input.split("-")[1].to_i
       puts ""
       puts "----- Paintings ranked # #{from} - #{to} -----"
-      while painting.ranking.between?(from, to)
-        puts "#{painting.ranking}. '#{painting.title}' by #{painting.painter}(#{painting.painter_nationality}), #{painting.time_period}"
+      
+      painting.list_all_painting_titles[from-1 ,10].each_with_index do |painting, index|
+        puts "#{index}. '#{painting.title}' by #{painting.painter}(#{painting.painter_nationality}), #{painting.time_period}"
+        end
+      puts ""
+      puts "Would you like to search for more paintings?"
+      play_again
     end
   end
 
@@ -103,3 +108,4 @@ class Cli
   end
 
 end
+
