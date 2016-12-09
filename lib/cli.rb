@@ -17,7 +17,7 @@ class Cli
 
   def search
     puts ""
-    puts "Would you like to search for a painting by painter, title or ranking?"
+    puts "Would you like to search for a painting by painter, title or rank?"
     input = gets.strip.downcase
     if input == "painter" || "by painter"
       puts ""
@@ -27,6 +27,8 @@ class Cli
       puts ""
       puts "Please enter the title of the painting."
       search_by_title
+    elsif input == "rank" || "by rank"
+      search_by_rank
     else
       puts ""
       puts "Invalid form of search. Please try again."
@@ -41,7 +43,7 @@ class Cli
       puts "#{painter}(#{painter.painter_nationality}) has #{painter.titles.count} paintings that are included in The Most Famous Paintings of All-Time:"
       puts ""
       painter.titles.each do |painting|
-        puts "'#{painting.title}', #{painting.time_period} (#{painting.style}) in #{painting.location}"
+        puts " ##{painting.ranking} - '#{painting.title}', #{painting.time_period} (#{painting.style}) in #{painting.location}"
       end
       puts ""
       puts "Would you like to search again?"
@@ -56,7 +58,7 @@ class Cli
     input = gets.strip.downcase
     if painting.list_all_painting_titles.detect{|painting| painting.downcase == input} != nil
       puts ""
-      puts "'#{painting}' is included in this list of The Most Famous Paintings of All-Time."
+      puts "'#{painting}' is ranked ##{painting.ranking} in this list of The Most Famous Paintings of All-Time."
       puts ""
       puts "painter:     #{painting.painter}(#{painter.painter_nationality})"
       puts "time period: #{painting.time_period}"
@@ -68,6 +70,23 @@ class Cli
     else
       puts "Sorry, this painting is not mentioned in this list of The Most Famous Paintings of All-Time. Please enter another the title of another painting."
       search_by_title
+    end
+  end
+
+  def search_by_rank
+    puts "Please choose paintings ranked from 1-10, 11-20, 21-30, 31-40, 41-50, 51-60, 61-70, 71-80, 81-90 or 91-100."
+    input = gets.strip.to_s
+    if input != "1-10" || "11-20" || "21-30" || "31-40" || "41-50" || "51-60" || "61-70" || "71-80" || "81-90" || "91-100"
+      puts "Invalid entry. Please try again."
+      puts ""
+      search_by_rank
+    else
+      from = input.split("-")[0].to_i
+      to = input.split("-")[1].to_i
+      puts ""
+      puts "----- Paintings ranked # #{from} - #{to} -----"
+      while painting.ranking.between?(from, to)
+        puts "#{painting.ranking}. '#{painting.title}' by #{painting.painter}(#{painting.painter_nationality}), #{painting.time_period}"
     end
   end
 
