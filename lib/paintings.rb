@@ -3,12 +3,13 @@ require 'open-uri'
 require 'pry'
 
 class Painting
-  attr_accessor :title, :url, :painter, :painter_nationality, :location, :style, :time_period
+  attr_accessor :title, :ranking, :url, :painter, :painter_nationality, :location, :style, :time_period
 
   @@all = []
 
-  def initialize(title, url, painter, painter_nationality, location, style, time_period)
+  def initialize(title, ranking, url, painter, painter_nationality, location, style, time_period)
     @title = title
+    @ranking = ranking
     @url = url
     @painter = painter
     @painter_nationality = painter_nationality
@@ -27,6 +28,7 @@ class Painting
     @url = card.css("a.col-item").attribute("href").text
 
     self.new(card.css("a > span.col-item-title").text,
+    index + 1,
     card.css("a.col-item").attribute("href").text
     scraper.scrape_painting_profile(url).css("ul.lined.features > li:nth-child(1) > span > a").text,
     scraper.scrape_painting_profile(url).css("ul.lined.features > li:nth-child(3) > span > a").text,
