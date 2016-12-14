@@ -1,3 +1,3 @@
-require_relative "../lib/cli.rb"
+require_relative "../lib/most_famous_paintings"
 
-Cli.new.call
+MostFamousPaintings::Cli.new.call
