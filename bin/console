@@ -1,5 +1,7 @@
-#!/bin/bash
-set -euo pipefail
-IFS=$'\n\t'
+#!/usr/bin/env ruby
+require "bundler/setup"
 
-bundle install
+require_relative "./bin/run"
+require 'irb'
+IRB.start
+
