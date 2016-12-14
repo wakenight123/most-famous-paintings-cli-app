@@ -1,12 +1,21 @@
-require_relative "../lib/scraper.rb"
-require_relative "../lib/painting.rb"
-require_relative "../lib/painter.rb"
-require 'nokogiri'
-
-class Cli
+class MostFamousPaintings::Cli
 
   def call
+    make_paintings
+    add_info_to_paintings
     start
+  end
+
+  def make_paintings
+    paintings = MostFamousPaintings::Scraper.paintings_hash
+    MostFamousPaintings::Painting.create_paintings(paintings)
+  end
+
+  def add_info_to_paintings
+    MostFamousPaintings::Painting.all.each do |painting|
+      info = MostFamousPaintings::Scraper.painting_info(painting.url)
+      painting.add_painting_info(info)
+    end
   end
 
   def start
@@ -38,11 +47,12 @@ class Cli
 
   def search_by_painter
     input = gets.strip.downcase
-    if painter.list_all_painters.detect{|painter| painter.downcase == input} != nil
+    if MostFamousPaintings::Painter.all.detect{|painter| painter.downcase == input} != nil
+      painter = MostFamousPaintings::Painter.new(painter)
       puts ""
       puts "#{painter}(#{painter.painter_nationality}) has #{painter.titles.count} paintings that are included in The Most Famous Paintings of All-Time:"
       puts ""
-      painter.titles.each do |painting|
+      MostFamousPaintings::Painter.titles.each do |painting|
         puts " ##{painting.ranking} - '#{painting.title}', #{painting.time_period} (#{painting.style}) in #{painting.location}"
       end
       puts ""
@@ -56,9 +66,9 @@ class Cli
 
   def search_by_title
     input = gets.strip.downcase
-    if painting.list_all_painting_titles.detect{|p| p.downcase == input} != nil
+    if MostFamousPaintings::Painting.all{|painting| painting.downcase == input} != nil
       puts ""
-      puts "'#{painting}' is ranked ##{painting.ranking} in this list of The Most Famous Paintings of All-Time."
+      puts "'#{painting.title}' is ranked ##{painting.ranking} in this list of The Most Famous Paintings of All-Time."
       puts ""
       puts "painter:     #{painting.painter}(#{painter.painter_nationality})"
       puts "time period: #{painting.time_period}"
@@ -75,6 +85,7 @@ class Cli
 
   def search_by_rank
     puts "Please choose a ranking interval from 1-100. For example, you can enter 1-25."
+    puts ""
     input = gets.strip.to_s
     if input.split("-").each {|num| num.to_i.between?(1, 100) == true}
       from = input.split("-")[0].to_i
@@ -82,8 +93,8 @@ class Cli
       puts ""
       puts "----- Paintings ranked # #{from} - #{to} -----"
 
-      painting.list_all_painting_titles[from-1 ,to-from+1].each_with_index do |painting, index|
-        puts "#{index}. '#{painting.title}' by #{painting.painter}(#{painting.painter_nationality}), #{painting.time_period}"
+      MostFamousPaintings::Painting.all[from-1 ,to-from+1].each_with_index do |p, index|
+        puts "#{index}. '#{p.title}' by #{p.painter}(#{p.painter_nationality}), #{p.time_period}"
         end
       puts ""
       puts "Would you like to search for more paintings?"
