@@ -1,5 +1,5 @@
 class MostFamousPaintings::Painting
-  attr_accessor :title, :ranking, :url, :painter, :painter_nationality, :location, :style, :time_period
+  attr_accessor :title, :ranking, :url, :painter, :painter_medium_size, :description
 
   @@all = []
 
@@ -12,9 +12,9 @@ class MostFamousPaintings::Painting
 
   def self.new_painting(card, index)
     self.new(
-      card.css("span.col-item-title").text,
+      card.css("h5").text,
       index.to_i + 1,
-      "http://www.brushwiz.com/#{card.css("a.col-item").attribute("href").text}")
+      "http://en.most-famous-paintings.com/MostFamousPaintings.nsf/#{card.css("a").attribute("href")}")
   end
 
   def self.all
@@ -25,24 +25,12 @@ class MostFamousPaintings::Painting
     self.all[position - 1]
   end
 
-  def painter
-    @painter ||= doc.xpath("/html/body/div[10]/div[2]/div[8]/div[2]/div[1]/div[2]/ul/li[1]/span/a").text
+  def painter_medium_size
+    @painter_medium_size ||= doc.xpath("/html/body/form/div[4]/center/h2").text
   end
 
-  def painter_nationality
-    @painter_nationality ||= doc.xpath("/html/body/div[10]/div[2]/div[8]/div[2]/div[1]/div[2]/ul/li[3]/span/a").text
-  end
-
-  def location
-    @location ||= doc.xpath("/html/body/div[10]/div[2]/div[8]/div[2]/div[1]/div[2]/ul/li[7]/span/a").text
-  end
-
-  def style
-    @style ||= doc.xpath("/html/body/div[10]/div[2]/div[8]/div[2]/div[1]/div[2]/ul/li[5]/span/a").text
-  end
-
-  def time_period
-    @time_period ||= doc.xpath("/html/body/div[10]/div[2]/div[8]/div[2]/div[1]/div[2]/ul/li[4]/span/a").text
+  def description
+    @description ||= doc.xpath("/html/body/form/div[4]/center/p").text
   end
 
   def doc
