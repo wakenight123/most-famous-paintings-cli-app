@@ -8,15 +8,35 @@ class MostFamousPaintings::Cli
 
   def start
     puts ""
-    puts "Which paintings would you like to see? Please enter the paintings' ranking interval. For example, you may enter 1-20."
+    puts "Which paintings would you like to see? Please enter a painting's ranking number or interval. For example, you may enter '1' or '1-20'."
     input = gets.strip.to_s
+    from = input.to_s.split("-")[0].to_i
+    to = input.to_s.split("-")[1].to_i
 
-    if input.split("-").each {|num| num.to_i.between?(1, 100)}
+    if (input.match(/[-]/) != nil) && (from.between?(1, 100)) && (to.between?(1, 100))
       print_paintings(input)
       select_painting?
-    else
-      puts "Invalid entry. Please try again."
+    elsif (input.match(/[-]/) != nil) && !(from.between?(1, 100)) && (to.between?(1, 100))
       puts ""
+      puts "Invalid entry. Please try again."
+      start
+    elsif (input.match(/[-]/) != nil) && (from.between?(1, 100)) && !(to.between?(1, 100))
+      puts ""
+      puts "Invalid entry. Please try again."
+      start
+    elsif (input.match(/[-]/) != nil) && !(from.between?(1, 100)) && !(to.between?(1, 100))
+      puts ""
+      puts "Invalid entry. Please try again."
+      start
+    elsif input.to_i.between?(1, 100)
+      painting = MostFamousPaintings::Painting.find(input.to_i)
+      print_painting(painting)
+      puts ""
+      puts "Would you like to see more paintings? Please enter 'yes' or 'no'."
+      play_again
+    else
+      puts ""
+      puts "Invalid entry. Please try again."
       start
     end
   end
@@ -28,7 +48,8 @@ class MostFamousPaintings::Cli
     elsif input == "no"
       puts "Thank you for playing. Please come back to play again soon!"
     else
-      puts "Invalid entry. Please enter yes or no."
+      puts ""
+      puts "Invalid entry. Please enter 'yes' or 'no'."
       play_again
     end
   end
@@ -46,28 +67,45 @@ class MostFamousPaintings::Cli
 
   def print_painting(painting)
     puts ""
-    puts "----- #{painting.title} - ##{painting.ranking} -----"
+    puts "----- ##{painting.ranking} - #{painting.title.upcase} -----"
     puts ""
-    puts "Painter:    #{painting.painter} (#{painting.painter_nationality})"
-    puts "Location:   #{painting.location}"
-    puts "Style:      #{painting.style}"
-    puts "Era:        #{painting.time_period}"
+    puts "Painter | Medium:  #{painting.painter_medium_size}"
+    puts "#{painting.description}"
   end
 
   def select_painting?
     puts ""
-    puts "Would you like more information on a specific painting? Please enter the painting's ranking number or type 'return' to browse more painting lists."
-    input = gets.strip
-    if input.to_i.between?(1, 100)
+    puts "Would you like more information on a specific painting? Please enter a painting's ranking number or interval. For example, you may enter '1' or '1-20' or type 'exit' to end the program."
+    input = gets.strip.to_s
+    from = input.to_s.split("-")[0].to_i
+    to = input.to_s.split("-")[1].to_i
+
+    if (input.match(/[-]/) != nil) && (from.between?(1, 100)) && (to.between?(1, 100))
+      print_paintings(input)
+      select_painting?
+    elsif (input.match(/[-]/) != nil) && !(from.between?(1, 100)) && (to.between?(1, 100))
+      puts ""
+      puts "Invalid entry. Please try again."
+      start
+    elsif (input.match(/[-]/) != nil) && (from.between?(1, 100)) && !(to.between?(1, 100))
+      puts ""
+      puts "Invalid entry. Please try again."
+      start
+    elsif (input.match(/[-]/) != nil) && !(from.between?(1, 100)) && !(to.between?(1, 100))
+      puts ""
+      puts "Invalid entry. Please try again."
+      start
+    elsif input.to_i.between?(1, 100)
       painting = MostFamousPaintings::Painting.find(input.to_i)
       print_painting(painting)
       puts ""
-      puts "Would you like to see more paintings?"
+      puts "Would you like to see more paintings? Please enter 'yes' or 'no'."
       play_again
-    elsif input.to_s == "return"
-      start
+    elsif input.to_s == "exit"
+      puts "Thank you for playing. Please come back to play again soon!"
     else
-      "Invalid entry."
+      puts ""
+      puts "Invalid entry."
       select_painting?
     end
   end
