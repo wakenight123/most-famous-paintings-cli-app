@@ -2,7 +2,8 @@ class MostFamousPaintings::Cli
 
   def call
     MostFamousPaintings::Scraper.new.make_paintings
-    puts "Welcome to the Directory of the World's Most Famous Paintings!"
+    puts ""
+    puts "Welcome to the Directory of the World's 100 Most Famous Paintings!"
     start
   end
 
