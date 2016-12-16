@@ -1,11 +1,11 @@
 class MostFamousPaintings::Scraper
 
   def scrape_site
-    Nokogiri::HTML(open("http://www.brushwiz.com/most-famous-paintings/"))
+    Nokogiri::HTML(open("http://en.most-famous-paintings.com/MostFamousPaintings.nsf/ListOfTop100MostPopularPainting?OpenForm"))
   end
 
   def scrape_paintings
-    self.scrape_site.css("body > div.page > div.content.visible.page-design > div.page-section.section-extended.loadmored > div > div")
+    self.scrape_site.css("body > form > div.MFP-Home-Main-Content-Block > div")
   end
 
   def make_paintings
