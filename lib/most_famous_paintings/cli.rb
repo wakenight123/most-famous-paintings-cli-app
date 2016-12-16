@@ -75,7 +75,7 @@ class MostFamousPaintings::Cli
 
   def select_painting?
     puts ""
-    puts "Would you like more information on a specific painting? Please enter a painting's ranking number or interval. For example, you may enter '1' or '1-20' or type 'exit' to end the program."
+    puts "If you want more information on a specific painting, please enter its ranking number or interval. For example, you may enter '1' or '1-20'. You can also enter 'exit' to end the program."
     input = gets.strip.to_s
     from = input.to_s.split("-")[0].to_i
     to = input.to_s.split("-")[1].to_i
