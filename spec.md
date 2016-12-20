@@ -2,5 +2,5 @@
 
 Specs:
 - [x] Have a CLI for interfacing with the application
-- [x] Pull data from an external source
-- [x] Implement both list and detail views
+- [x] Pulls data from external site: www.most-famous-paintings.com
+- [x] Returns both painting lists and painting profile details
