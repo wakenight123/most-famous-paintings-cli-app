@@ -10,13 +10,6 @@ class MostFamousPaintings::Painting
     @@all << self
   end
 
-  def self.new_painting(card, index)
-    self.new(
-      card.css("h5").text,
-      index.to_i + 1,
-      "http://en.most-famous-paintings.com/MostFamousPaintings.nsf/#{card.css("a").attribute("href")}")
-  end
-
   def self.all
     @@all
   end
@@ -35,6 +28,10 @@ class MostFamousPaintings::Painting
 
   def doc
     @doc ||= Nokogiri::HTML(open(self.url))
+  end
+
+  def self.painting_count
+    self.all.count
   end
 
 end
