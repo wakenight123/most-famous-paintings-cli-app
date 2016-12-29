@@ -1,6 +1,4 @@
-class MostFamousPaintings::Scraper
-
-  def scrape_site
+def scrape_site
     Nokogiri::HTML(open("http://en.most-famous-paintings.com/MostFamousPaintings.nsf/ListOfTop100MostPopularPainting?OpenForm"))
   end
 
@@ -10,7 +8,10 @@ class MostFamousPaintings::Scraper
 
   def make_paintings
     scrape_paintings.each_with_index do |card, index|
-      MostFamousPaintings::Painting.new_painting(card, index)
+      MostFamousPaintings::Painting.new(
+        card.css("h5").text,
+        index.to_i + 1,
+        "http://en.most-famous-paintings.com/MostFamousPaintings.nsf/#{card.css("a").attribute("href")}")
     end
   end
 
