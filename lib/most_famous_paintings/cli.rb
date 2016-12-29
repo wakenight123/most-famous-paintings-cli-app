@@ -10,7 +10,7 @@ class MostFamousPaintings::Cli
   def start
     puts ""
     puts "Which paintings would you like to see? Please enter a painting's ranking number or interval. For example, you may enter '1' or '1-20'."
-    input = gets.strip.to_s
+    input = gets.strip
     from = input.to_s.split("-")[0].to_i
     to = input.to_s.split("-")[1].to_i
 
