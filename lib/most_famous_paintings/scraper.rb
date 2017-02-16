@@ -1,4 +1,6 @@
-def scrape_site
+class MostFamousPaintings::Scraper 
+
+  def scrape_site
     Nokogiri::HTML(open("http://en.most-famous-paintings.com/MostFamousPaintings.nsf/ListOfTop100MostPopularPainting?OpenForm"))
   end
 
